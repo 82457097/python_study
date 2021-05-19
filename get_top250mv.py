@@ -11,6 +11,7 @@ def get_movies():
 
     fd = open("movies.txt", "a+")
     movie_list = []
+    index = 0
     for i in range(0, 10):
         link = 'https://movie.douban.com/top250?start=' + str(i * 25)
         r = requests.get(link, headers= headers, timeout= 10)
@@ -23,7 +24,9 @@ def get_movies():
             movie = each.text.strip()
             print(movie)
             if movie[0] != '/':
-                fd.write(movie)
+                print(movie)
+                index = index+1
+                fd.write(str(index) + ": " + movie + "\n")
                 movie_list.append(movie)
             else:
                 continue
