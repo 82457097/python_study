@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -12,17 +14,19 @@ def get_movies():
     for i in range(0, 10):
         link = 'https://movie.douban.com/top250?start=' + str(i * 25)
         r = requests.get(link, headers= headers, timeout= 10)
-        print(str(i+1), "页面响应状态码:", r.status_code)
+        print(str(i+1), "页面状态响应码:", r.status_code)
 
         soup = BeautifulSoup(r.text, "html.parser")
         div_list = soup.find_all('span', class_='title')
+        
         for each in div_list:
-            print(each)
             movie = each.text.strip()
-            fd.write(movie)
-
-            movie_list.append(movie)
-
+            print(movie)
+            if movie[0] != '/':
+                fd.write(movie)
+                movie_list.append(movie)
+            else:
+                continue
     fd.close
     return movie_list
         
